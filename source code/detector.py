@@ -1,3 +1,9 @@
+# Reference:
+# Author: Rosebrock, Adrian
+# Date: November 12, 2018
+# Date used: October 17, 2020
+# Available online: https://www.pyimagesearch.com/2018/11/12/yolo-object-detection-with-opencv/
+
 import cv2
 import numpy as np
 import os

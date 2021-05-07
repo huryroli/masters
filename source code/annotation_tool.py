@@ -1,3 +1,16 @@
+# Reference 1:
+# Author: Rosebrock, Adrian
+# Date: March 9, 2015
+# Date used: April 15, 2021
+# Available online: https://www.pyimagesearch.com/2015/03/09/capturing-mouse-click-events-with-python-and-opencv/
+# 
+# Reference 2:
+# Author: ivder
+# Date: November 4, 2020
+# Date used: April 16, 2021
+# Available online: https://github.com/ivder/LabelMeYoloConverter
+
+
 import cv2
 import os
 import ntpath
