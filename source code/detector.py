@@ -136,94 +136,94 @@ def detection():
 
         print("--------------------------------------------------------------------------")
 
+if __name__ == "__main__":
+    cd = os.getcwd()
 
-cd = os.getcwd()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-w', "--weights", type = str, required = True)
+    parser.add_argument("-cfg", "--config_file", type = str, required = True)
+    parser.add_argument("-cp", "--class_path", type = str, default = cd + "obj.names",
+                        help = "path to the class names")
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-w', "--weights", type = str, required = True)
-parser.add_argument("-cfg", "--config_file", type = str, required = True)
-parser.add_argument("-cp", "--class_path", type = str, default = cd + "obj.names",
-                    help = "path to the class names")
+    # path args and variables used in detection
+    parser.add_argument('-i', '--image', type = str, nargs = '*', default = '',
+                        help = "Path to the image to be detected.")
+    parser.add_argument("-f", "--folder", type = str, nargs = '*', default = '',
+                        help = "Path to the folder on which the detection is to be performed.")
+    parser.add_argument("-c", "--confidence", type = float, default = 0.5,
+                        help = "Minimum probability to filter weak detections. (Default value: 0.5)")
+    parser.add_argument("-t", "--threshold", type = float, default = 0.3,
+                        help = "Threshold when applying non-maxima suppression to eliminate duplicate boxes."
+                               "(Default value: 0.3)")
+    parser.add_argument("-sf", "--scale_factor", type = float, default = 0.6,
+                        help = "Scale factor to resize the horizontal and vertical "
+                               "axis of the image. (Default value: 0.6)")
 
-# path args and variables used in detection
-parser.add_argument('-i', '--image', type = str, nargs = '*', default = '',
-                    help = "Path to the image to be detected.")
-parser.add_argument("-f", "--folder", type = str, nargs = '*', default = '',
-                    help = "Path to the folder on which the detection is to be performed.")
-parser.add_argument("-c", "--confidence", type = float, default = 0.5,
-                    help = "Minimum probability to filter weak detections. (Default value: 0.5)")
-parser.add_argument("-t", "--threshold", type = float, default = 0.3,
-                    help = "Threshold when applying non-maxima suppression to eliminate duplicate boxes."
-                           "(Default value: 0.3)")
-parser.add_argument("-sf", "--scale_factor", type = float, default = 0.6,
-                    help = "Scale factor to resize the horizontal and vertical "
-                           "axis of the image. (Default value: 0.6)")
+    # args for showing and exporting output
+    parser.add_argument("-show_image", action = "store_true",
+                        help = "Shows the image after detection.")
+    parser.add_argument("-save_image", action = "store_true",
+                        help = "Saves the image after detection with its detected bounding boxes.")
+    parser.add_argument("-sd", "--saving_directory", type = str, default = cd,
+                        help = "Path to the directory where the detected images will be saved. "
+                               "(Default value is the current directory.)")
+    parser.add_argument("-e", "--export", action = "store_true",
+                        help = "Exports the output into the saving directory")
 
-# args for showing and exporting output
-parser.add_argument("-show_image", action = "store_true",
-                    help = "Shows the image after detection.")
-parser.add_argument("-save_image", action = "store_true",
-                    help = "Saves the image after detection with its detected bounding boxes.")
-parser.add_argument("-sd", "--saving_directory", type = str, default = cd,
-                    help = "Path to the directory where the detected images will be saved. "
-                           "(Default value is the current directory.)")
-parser.add_argument("-e", "--export", action = "store_true",
-                    help = "Exports the output into the saving directory")
+    # args for printing to the console
+    parser.add_argument("-PRINTALL", action = "store_true",
+                        help = "Prints all information (coordinates, confidence score and the total are of the detected"
+                               "bounding boxes) to the console.")
+    parser.add_argument("-COORDINATES", action = "store_true",
+                        help = "Print the x1, y1, x2 and y2 coordinates of the detected bounding boxes to the console.")
+    parser.add_argument("-CONFIDENCE", action = "store_true",
+                        help = "Print the confidence scores of the detected bounding boxes to the console.")
+    parser.add_argument("-BBOX_AREA", action = "store_true",
+                        help = "Print the total area (width * height) of the detected bounding boxes to the console.")
+    args = parser.parse_args()
 
-# args for printing to the console
-parser.add_argument("-PRINTALL", action = "store_true",
-                    help = "Prints all information (coordinates, confidence score and the total are of the detected"
-                           "bounding boxes) to the console.")
-parser.add_argument("-COORDINATES", action = "store_true",
-                    help = "Print the x1, y1, x2 and y2 coordinates of the detected bounding boxes to the console.")
-parser.add_argument("-CONFIDENCE", action = "store_true",
-                    help = "Print the confidence scores of the detected bounding boxes to the console.")
-parser.add_argument("-BBOX_AREA", action = "store_true",
-                    help = "Print the total area (width * height) of the detected bounding boxes to the console.")
-args = parser.parse_args()
+    image = args.image
+    confidence_threshold = args.confidence
+    nms_threshold = args.threshold
+    scale_factor = args.scale_factor
+    show = args.show_image
+    folder = args.folder
+    save_image = args.save_image
+    saving_directory = args.saving_directory
+    export = args.export
 
-image = args.image
-confidence_threshold = args.confidence
-nms_threshold = args.threshold
-scale_factor = args.scale_factor
-show = args.show_image
-folder = args.folder
-save_image = args.save_image
-saving_directory = args.saving_directory
-export = args.export
+    # keywords for printing to the console
+    print_all = args.PRINTALL
+    print_coor = args.COORDINATES
+    print_conf = args.CONFIDENCE
+    print_area = args.BBOX_AREA
 
-# keywords for printing to the console
-print_all = args.PRINTALL
-print_coor = args.COORDINATES
-print_conf = args.CONFIDENCE
-print_area = args.BBOX_AREA
+    modelWeights = args.weights
+    modelConfig = args.config_file
 
-modelWeights = args.weights
-modelConfig = args.config_file
+    net = cv2.dnn.readNet(modelWeights, modelConfig)
+    net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+    net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
-net = cv2.dnn.readNet(modelWeights, modelConfig)
-net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
-net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+    class_path = args.class_path
+    file = open(class_path, 'r').read().split('\n')
+    classes = list(filter(None, file))
 
-class_path = args.class_path
-file = open(class_path, 'r').read().split('\n')
-classes = list(filter(None, file))
+    layer_names = net.getLayerNames()
+    output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
-layer_names = net.getLayerNames()
-output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
+    image_path = []
 
-image_path = []
+    if image != '':
+        image_path.append(image[0])
 
-if image != '':
-    image_path.append(image[0])
+    if folder != '':
+        for root, dirs, files in os.walk(folder[0]):
+            for f in files:
+                if f.endswith(("png", "jpg", "PNG", "JPG")):
+                    path = os.path.join(root, f)
+                    image_path.append(path)
 
-if folder != '':
-    for root, dirs, files in os.walk(folder[0]):
-        for f in files:
-            if f.endswith(("png", "jpg", "PNG", "JPG")):
-                path = os.path.join(root, f)
-                image_path.append(path)
+    convert_to_testing(modelConfig)
 
-convert_to_testing(modelConfig)
-
-detection()
+    detection()
