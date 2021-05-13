@@ -7,7 +7,7 @@
 # Reference 2:
 # Author: ivder
 # Date: November 4, 2020
-# Date used: April 16, 2021
+# Date used: April 15, 2021
 # Available online: https://github.com/ivder/LabelMeYoloConverter
 
 
@@ -24,8 +24,8 @@ def check_if_dir_exists(folder):
 
 
 def convert_to_yolo(width, height, bbox):
-    dw = 1. / width
-    dh = 1. / height
+    dw = 1.0 / width
+    dh = 1.0 / height
     x = abs(((bbox[0] + bbox[1]) / 2.0) * dw)
     y = abs(((bbox[2] + bbox[3]) / 2.0) * dw)
     w = abs((bbox[1] - bbox[0]) * dh)
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     labeling = Labeling()
 
     cd = os.getcwd()
-    check_if_dir_exists(cd + "/custom_data/")
+    check_if_dir_exists(cd + "/custom_data")
     check_if_dir_exists(cd + "/custom_data/obj")
 
     parser = argparse.ArgumentParser()
