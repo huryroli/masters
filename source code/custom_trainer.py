@@ -97,18 +97,26 @@ if __name__ == "__main__":
 
     write_file(cd + "/custom_data/obj.data", data)
 
-    if args.no_gpu and args.show_loss:
+    if args.no_gpu and args.show_loss and args.map:
         os.system(
             "darknet_no_gpu.exe detector train " + args.data + " custom_cfg/yolov3_" + cfg_name + ".cfg "
-            + args.weights_file)
+            + args.weights_file + "-map")
+    elif args.no_gpu and args.map:
+        os.system(
+            "darknet_no_gpu.exe detector train " + args.data + " custom_cfg/yolov3_" + cfg_name + ".cfg "
+            + args.weights_file + " -dont_show -map")
     elif args.no_gpu:
         os.system(
             "darknet_no_gpu.exe detector train " + args.data + " custom_cfg/yolov3_" + cfg_name + ".cfg "
             + args.weights_file + " -dont_show")
-    elif args.show_loss:
+    elif args.show_loss and args.map:
         os.system(
             "darknet.exe detector train " + args.data + " custom_cfg/yolov3_" + cfg_name + ".cfg "
-            + args.weights_file)
+            + args.weights_file + " -map")
+    elif args.map:
+        os.system(
+            "darknet_no_gpu.exe detector train " + args.data + " custom_cfg/yolov3_" + cfg_name + ".cfg "
+            + args.weights_file + " -dont_show -map")
     else:
         os.system(
             "darknet.exe detector train " + args.data + " custom_cfg/yolov3_" + cfg_name + ".cfg "
