@@ -1,21 +1,22 @@
 # Master thesis
 ## Instructions
 
-To run create_obj.exe, follow these instructions:
+To run create_obj, follow these instructions:
 1) Use the "-f" ("--folder") flag to define a path to a folder.
 2) Use the "--train", "--test" or both flags to perform the required actions.
 
-To run annotation_tool.exe, follow these instructions:
+To run annotation_tool, follow these instructions:
 1) Use either the "-i" ("--image") or "-f" ("--folder") to define the path to the images.
 2) Once the application is running, start drawing the rectangles by holding down the left mouse button, and release the button once the box is complete.
 3) To perform user actions, you can use the following keys: R - reset image to default, U - increase class index, D - decrease class index, S - save text file, N - go to next image, ESC - exit application.
 4) Optional argument: 
     "-sd", "--save_dir" - path to the saving directory, default: cd + /custom_data/obj
 
-To run custom_trainer.py, follow these instructions:
+To run custom_trainer, follow these instructions:
 1) You have to build the Darknet framework on your Windows machine. For more information, go to: https://github.com/AlexeyAB/darknet#requirements
-2) One required argument to run training is the "-cn" ("--class_name") argument, which contains the names of the classes (e.g., -cn class1 class2 ... classN)
-3) Optional arguments:
+2) The script/executable MUST be in the built "/darknet" folder because it will look for "cfg/yolov3.cfg" to make a copy, and also needs either "darknet.exe" or "darknet_no_gpu.exe" to start training
+3) One required argument to run training is the "-cn" ("--class_name") argument, which contains the names of the classes (e.g., -cn class1 class2 ... classN)
+4) Optional arguments:
 
    To make changes in the configuration file:
    - "-bs", "--batch_size", default = 64
@@ -34,7 +35,7 @@ To run custom_trainer.py, follow these instructions:
    - "--no_gpu", if this command is used, the training will run on CPU, otherwise it runs on GPU
    - "--show_loss", if this command is used, the graph of loss will be plotted
    
-To run detector.py, follow these instructions:
+To run detector, follow these instructions:
 1) There are three files needed to run detection:
     - weights file ("-w", "--weights")
     - configuration file ("-cfg", "--config_file")
