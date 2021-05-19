@@ -109,6 +109,7 @@ if __name__ == "__main__":
         p = p_ext[0]
 
         img = cv2.imread(i)
+        cv2.namedWindow("Annotation tool for training YOLO")
         cv2.setMouseCallback("Annotation tool for training YOLO", labeling.draw_label)
         clone = img.copy()
 
